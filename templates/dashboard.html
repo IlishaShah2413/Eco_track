@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}EcoTrack — Your Carbon Profile{% endblock %}
+
+{% block content %}
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-inner">
+    <svg class="loading-ring" viewBox="0 0 100 100" width="72" height="72">
+      <circle cx="50" cy="50" r="42" fill="none" stroke="var(--line)" stroke-width="4"/>
+      <circle cx="50" cy="50" r="42" fill="none" stroke="var(--moss)" stroke-width="4"
+              stroke-dasharray="264" stroke-dashoffset="200" stroke-linecap="round" class="spin"/>
+    </svg>
+    <p class="loading-label">Growing your carbon profile&hellip;</p>
+    <p class="loading-tip" id="loading-tip">{{ tips[0] }}</p>
+  </div>
+</div>
+
+<section class="profile-head" id="dashboard-content" hidden>
+  <div>
+    <p class="eyebrow">Personal Carbon Profile &middot; {{ profile.name }}</p>
+    <h1>Your net footprint is <span class="accent" id="net-headline">{{ result.net }}</span> <span class="unit">kg CO&#8322;e / yr</span></h1>
+    <p class="lede" id="percentile-line">
+      That's better than <strong id="percentile-value">{{ percentile }}%</strong> of tracked EcoTrack users
+      (community average: <span id="avg-value">{{ community_average }}</span> kg CO&#8322;e/yr).
+    </p>
+  </div>
+
+  <div class="ring-gauge-wrap">
+    <svg id="ring-gauge" viewBox="0 0 240 240" width="220" height="220"></svg>
+    <div class="ring-gauge-center">
+      <span class="ring-gauge-figure" id="gross-figure">{{ result.gross }}</span>
+      <span class="ring-gauge-label">gross, kg/yr</span>
+      <span class="ring-gauge-figure offset" id="offset-figure">&minus;{{ result.total_offsets }}</span>
+      <span class="ring-gauge-label">offset, kg/yr</span>
+    </div>
+  </div>
+</section>
+
+<section class="grid-2col" id="breakdown-section" hidden>
+  <div class="card">
+    <h2>Major contributors</h2>
+    <div id="contributors-list" class="contributors-list"></div>
+  </div>
+
+  <div class="card">
+    <h2>Personalized advice</h2>
+    <ul class="advice-list">
+      {% for tip in recommendations %}
+      <li>{{ tip }}</li>
+      {% endfor %}
+    </ul>
+    <a class="btn ghost small" href="{{ url_for('learn_more') }}">Learn more about reducing your footprint &rarr;</a>
+  </div>
+</section>
+
+<section class="card whatif-card" id="whatif-section" hidden>
+  <div class="whatif-head">
+    <h2>What-if Simulator</h2>
+    <p>Drag the sliders &mdash; your profile recalculates live, no page reload.</p>
+  </div>
+
+  <div class="whatif-grid">
+    <label class="slider-field">
+      <span>Monthly travel distance <b id="v-distance">{{ profile.distance_km or 0 }} km</b></span>
+      <input type="range" id="w-distance" min="0" max="3000" step="10" value="{{ profile.distance_km or 0 }}">
+    </label>
+
+    <label class="slider-field">
+      <span>Electricity <b id="v-electricity">{{ profile.electricity_kwh or 0 }} kWh/mo</b></span>
+      <input type="range" id="w-electricity" min="0" max="1000" step="10" value="{{ profile.electricity_kwh or 0 }}">
+    </label>
+
+    <label class="slider-field">
+      <span>LPG cylinders <b id="v-lpg">{{ profile.lpg_cylinders or 0 }}/mo</b></span>
+      <input type="range" id="w-lpg" min="0" max="4" step="0.5" value="{{ profile.lpg_cylinders or 0 }}">
+    </label>
+
+    <label class="slider-field">
+      <span>Meat meals <b id="v-meat">{{ profile.meat_meals_week or 0 }}/wk</b></span>
+      <input type="range" id="w-meat" min="0" max="21" step="1" value="{{ profile.meat_meals_week or 0 }}">
+    </label>
+
+    <label class="slider-field">
+      <span>Waste bags <b id="v-waste">{{ profile.waste_bags_week or 0 }}/wk</b></span>
+      <input type="range" id="w-waste" min="0" max="14" step="1" value="{{ profile.waste_bags_week or 0 }}">
+    </label>
+
+    <label class="slider-field">
+      <span>Trees maintained <b id="v-trees">{{ profile.trees or 0 }}</b></span>
+      <input type="range" id="w-trees" min="0" max="30" step="1" value="{{ profile.trees or 0 }}">
+    </label>
+  </div>
+
+  <div class="whatif-result">
+    <div>
+      <span class="whatif-label">Simulated net footprint</span>
+      <span class="whatif-figure" id="w-net">{{ result.net }} kg CO&#8322;e/yr</span>
+    </div>
+    <div class="whatif-delta" id="w-delta"></div>
+  </div>
+</section>
+
+<script id="dashboard-data" type="application/json">
+{
+  "profile": {{ profile | tojson }},
+  "result": {{ result | tojson }},
+  "percentile": {{ percentile }},
+  "community_average": {{ community_average }},
+  "contributors": {{ contributors | tojson }},
+  "tips": {{ tips | tojson }}
+}
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+{% endblock %}

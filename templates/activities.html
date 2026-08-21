@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}EcoTrack — Daily Activities{% endblock %}
+
+{% block content %}
+<section class="hero-mini">
+  <p class="eyebrow">Daily log</p>
+  <h1>Track today, <span class="accent">not just the average week.</span></h1>
+  <p class="lede">Hi {{ profile.name }} — this is a lightweight daily check-in scaffold. Wire it to a database
+  to persist entries and feed a real trend chart on the dashboard.</p>
+</section>
+
+<div class="card">
+  <h2>Today's quick log</h2>
+  <form class="quick-log" onsubmit="event.preventDefault(); this.reset(); this.querySelector('.log-confirm').hidden=false;">
+    <label class="field">
+      <span>Km travelled today</span>
+      <input type="number" min="0" step="1" placeholder="e.g. 12">
+    </label>
+    <label class="field">
+      <span>Meat meals today</span>
+      <input type="number" min="0" max="3" step="1" placeholder="0–3">
+    </label>
+    <label class="field">
+      <span>Notes</span>
+      <input type="text" placeholder="e.g. cycled to work, skipped AC">
+    </label>
+    <button type="submit" class="btn primary">Save entry</button>
+    <p class="log-confirm" hidden>Logged locally for this demo — connect a database to persist across sessions.</p>
+  </form>
+</div>
+{% endblock %}

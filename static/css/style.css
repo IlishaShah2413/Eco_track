@@ -1,0 +1,355 @@
+/* ==========================================================================
+   EcoTrack — Design tokens
+   Palette: pine ink / sage paper / moss green / clay soil / sun amber / rust
+   Type: Fraunces (display, organic serif) + Work Sans (body) + IBM Plex Mono (data)
+   Signature: concentric "growth ring" gauge, echoing tree rings & carbon rings
+   ========================================================================== */
+
+:root {
+  --ink: #16241c;
+  --paper: #eef2ea;
+  --paper-raised: #f7f9f4;
+  --moss: #3f6a4f;
+  --moss-dark: #2b4c39;
+  --moss-light: #8fb08f;
+  --soil: #8a5a3b;
+  --sun: #dba53d;
+  --rust: #bf5340;
+  --line: rgba(22, 36, 28, 0.14);
+  --line-soft: rgba(22, 36, 28, 0.08);
+  --shadow: 0 20px 50px -30px rgba(22, 36, 28, 0.45);
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Work Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a { color: var(--moss-dark); }
+
+.rings-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(63,106,79,0.07) 0, transparent 40%),
+    radial-gradient(circle at 92% 85%, rgba(219,165,61,0.08) 0, transparent 45%);
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem clamp(1.25rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: var(--moss-dark);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+}
+.brand-mark { color: var(--moss); }
+.topnav { display: flex; gap: 1.75rem; }
+.topnav a {
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 500;
+  opacity: 0.72;
+  transition: opacity 0.15s ease;
+}
+.topnav a:hover { opacity: 1; }
+
+/* ---------- Layout ---------- */
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 2rem) 5rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1.25rem, 4vw, 2rem) 3rem;
+  font-size: 0.82rem;
+  color: var(--ink);
+  opacity: 0.55;
+  font-family: var(--font-mono);
+}
+.footer a { color: inherit; }
+
+/* ---------- Hero / headings ---------- */
+.eyebrow {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  color: var(--moss-dark);
+  margin: 0 0 0.9rem;
+}
+h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  line-height: 1.12;
+  margin: 0 0 0.9rem;
+  letter-spacing: -0.01em;
+}
+h1 .accent, .accent { color: var(--moss); font-style: italic; }
+.unit { font-size: 0.45em; font-family: var(--font-mono); font-style: normal; color: var(--ink); opacity: 0.6; }
+.lede { font-size: 1.05rem; max-width: 46ch; opacity: 0.82; }
+h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+.hero-mini { margin-bottom: 2.5rem; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.5rem;
+}
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 760px) { .grid-2col { grid-template-columns: 1fr; } }
+
+/* ---------- Form: fields, cards, checkboxes ---------- */
+.field { display: block; margin-bottom: 1.4rem; }
+.field > span { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+input[type="text"], input[type="number"], select {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper-raised);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+}
+input:focus, select:focus, .card-option input:focus + span, .check-option input:focus + span {
+  outline: 2px solid var(--moss);
+  outline-offset: 2px;
+}
+.hint { font-size: 0.85rem; opacity: 0.65; margin-top: -0.6rem; margin-bottom: 1.2rem; }
+
+.card-options { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.card-option { position: relative; }
+.card-option input { position: absolute; opacity: 0; }
+.card-option span {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  transition: all 0.15s ease;
+}
+.card-option input:checked + span {
+  background: var(--moss);
+  border-color: var(--moss);
+  color: #fff;
+}
+
+.check-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+@media (max-width: 600px) { .check-options { grid-template-columns: 1fr; } }
+.check-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.check-option input { accent-color: var(--moss); width: 16px; height: 16px; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn.primary { background: var(--moss); color: #fff; }
+.btn.primary:hover { background: var(--moss-dark); }
+.btn.ghost { background: transparent; border-color: var(--line); color: var(--ink); }
+.btn.ghost:hover { border-color: var(--moss); color: var(--moss-dark); }
+.btn.small { padding: 0.5rem 1.1rem; font-size: 0.85rem; margin-top: 0.5rem; }
+
+/* ---------- Questionnaire stepper ---------- */
+.ring-progress { margin-bottom: 2rem; }
+.ring-progress svg { width: 100%; height: 20px; display: block; }
+.ring-steps { display: flex; justify-content: space-between; margin-top: -14px; }
+.ring-step {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  opacity: 0.35;
+  background: var(--paper);
+  padding: 0 0.4rem;
+}
+.ring-step.active, .ring-step.done { opacity: 1; color: var(--moss-dark); font-weight: 600; }
+
+fieldset.step { border: none; padding: 0; margin: 0 0 2rem; }
+fieldset.step legend {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 1.3rem;
+}
+.step-nav { display: flex; gap: 0.75rem; justify-content: flex-end; }
+
+/* ---------- Dashboard: loading screen ---------- */
+.loading-screen {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading-inner { text-align: center; max-width: 40ch; }
+.loading-ring circle.spin {
+  transform-origin: center;
+  animation: spin 1.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-label {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin: 1rem 0 0.4rem;
+}
+.loading-tip { font-size: 0.9rem; opacity: 0.65; min-height: 2.6em; }
+
+/* ---------- Dashboard: profile head + ring gauge ---------- */
+.profile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.profile-head > div:first-child { flex: 1; min-width: 280px; }
+.ring-gauge-wrap { position: relative; flex-shrink: 0; }
+#ring-gauge { display: block; }
+.ring-gauge-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.1rem;
+}
+.ring-gauge-figure {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--rust);
+}
+.ring-gauge-figure.offset { color: var(--moss); margin-top: 0.35rem; }
+.ring-gauge-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  margin-bottom: 0.1rem;
+}
+
+/* ---------- Contributors list ---------- */
+.contributors-list { display: flex; flex-direction: column; gap: 0.85rem; }
+.contributor-row { display: grid; grid-template-columns: 110px 1fr 60px; align-items: center; gap: 0.75rem; }
+.contributor-row .label { font-size: 0.88rem; font-weight: 500; text-transform: capitalize; }
+.contributor-row .bar-track { background: var(--line-soft); border-radius: 999px; height: 10px; overflow: hidden; }
+.contributor-row .bar-fill { height: 100%; background: var(--moss); border-radius: 999px; }
+.contributor-row .pct { font-family: var(--font-mono); font-size: 0.82rem; text-align: right; opacity: 0.75; }
+
+.advice-list { padding-left: 1.1rem; margin: 0 0 1rem; }
+.advice-list li { margin-bottom: 0.7rem; font-size: 0.94rem; opacity: 0.88; }
+
+/* ---------- What-if simulator ---------- */
+.whatif-card { padding: 2rem; }
+.whatif-head { margin-bottom: 1.5rem; }
+.whatif-head p { opacity: 0.7; margin: 0.2rem 0 0; font-size: 0.92rem; }
+.whatif-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem 2rem;
+  margin-bottom: 1.75rem;
+}
+@media (max-width: 700px) { .whatif-grid { grid-template-columns: 1fr; } }
+.slider-field span {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  margin-bottom: 0.4rem;
+}
+.slider-field b { font-family: var(--font-mono); font-weight: 600; color: var(--moss-dark); }
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--moss);
+}
+.whatif-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 1.4rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.whatif-label { display: block; font-size: 0.82rem; opacity: 0.65; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+.whatif-figure { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 600; color: var(--ink); }
+.whatif-delta { font-family: var(--font-mono); font-size: 1rem; font-weight: 600; padding: 0.4rem 0.9rem; border-radius: 999px; }
+.whatif-delta.down { color: var(--moss-dark); background: rgba(63,106,79,0.12); }
+.whatif-delta.up { color: var(--rust); background: rgba(191,83,64,0.12); }
+
+/* ---------- Activities quick log ---------- */
+.quick-log { display: grid; gap: 1rem; max-width: 420px; }
+.log-confirm { font-size: 0.85rem; color: var(--moss-dark); }
+
+/* Accessibility: visible focus, reduced motion */
+:focus-visible { outline: 2px solid var(--moss); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .loading-ring circle.spin { animation: none; }
+  * { transition: none !important; }
+}

@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}EcoTrack — Lifestyle Questionnaire{% endblock %}
+
+{% block content %}
+<section class="hero-mini">
+  <p class="eyebrow">Step 1 of 2 &middot; Lifestyle Questionnaire</p>
+  <h1>Tell us about your week, <span class="accent">we'll show you your footprint.</span></h1>
+  <p class="lede">Five short sections. Nothing here is judged &mdash; it's just the raw material your Personal Carbon Profile is built from.</p>
+</section>
+
+<form id="quiz-form" action="{{ url_for('submit') }}" method="POST" novalidate>
+
+  <div class="ring-progress" id="ring-progress" aria-hidden="true">
+    <svg viewBox="0 0 200 40" preserveAspectRatio="none">
+      <line x1="20" y1="20" x2="180" y2="20" stroke="var(--line)" stroke-width="1"/>
+    </svg>
+    <div class="ring-steps">
+      <span class="ring-step active" data-step="0">Register</span>
+      <span class="ring-step" data-step="1">A &middot; Transport</span>
+      <span class="ring-step" data-step="2">B &middot; Home Energy</span>
+      <span class="ring-step" data-step="3">C &middot; Food</span>
+      <span class="ring-step" data-step="4">D &middot; Waste</span>
+      <span class="ring-step" data-step="5">E &middot; Habits</span>
+    </div>
+  </div>
+
+  <!-- STEP 0: Registration -->
+  <fieldset class="step" data-step="0">
+    <legend>Quick registration</legend>
+    <label class="field">
+      <span>Your name</span>
+      <input type="text" name="name" placeholder="e.g. Asha Kulkarni" required>
+    </label>
+    <p class="hint">This is a lightweight demo login &mdash; no password, just a label for your profile.</p>
+  </fieldset>
+
+  <!-- SECTION A: Transportation -->
+  <fieldset class="step" data-step="1" hidden>
+    <legend>Section A &middot; Transportation</legend>
+
+    <label class="field">
+      <span>What is your primary mode of transport?</span>
+      <div class="card-options" data-name="transport_mode">
+        {% for mode in transport_modes %}
+        <label class="card-option">
+          <input type="radio" name="transport_mode" value="{{ mode }}" {% if loop.first %}checked{% endif %} required>
+          <span>{{ mode }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </label>
+
+    <label class="field">
+      <span>Approximately how many kilometers do you travel per month?</span>
+      <input type="number" name="distance_km" min="0" step="1" placeholder="e.g. 600" required>
+    </label>
+
+    <label class="field">
+      <span>If you use a private vehicle, what is its fuel type?</span>
+      <select name="fuel_type">
+        {% for f in fuel_types %}
+        <option value="{{ f }}" {% if f == 'Not Applicable' %}selected{% endif %}>{{ f }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label class="field">
+      <span>How often do you use public transportation?</span>
+      <select name="pt_freq">
+        {% for f in pt_freq %}
+        <option value="{{ f }}">{{ f }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  </fieldset>
+
+  <!-- SECTION B: Home Energy -->
+  <fieldset class="step" data-step="2" hidden>
+    <legend>Section B &middot; Home Energy</legend>
+
+    <label class="field">
+      <span>How many units (kWh) of electricity does your household consume per month?</span>
+      <input type="number" name="electricity_kwh" min="0" step="1" placeholder="e.g. 250" required>
+    </label>
+
+    <label class="field">
+      <span>How many LPG cylinders does your household use per month?</span>
+      <div class="card-options" data-name="lpg_cylinders">
+        {% for opt in lpg_options %}
+        <label class="card-option">
+          <input type="radio" name="lpg_cylinders" value="{{ opt }}" {% if opt == 1 %}checked{% endif %} required>
+          <span>{{ opt }}{% if opt == 2 %}+{% endif %}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </label>
+  </fieldset>
+
+  <!-- SECTION C: Food & Lifestyle -->
+  <fieldset class="step" data-step="3" hidden>
+    <legend>Section C &middot; Food &amp; Lifestyle</legend>
+
+    <label class="field">
+      <span>Which best describes your diet?</span>
+      <div class="card-options" data-name="diet">
+        {% for d in diets %}
+        <label class="card-option">
+          <input type="radio" name="diet" value="{{ d }}" {% if d == 'Mixed Diet' %}checked{% endif %} required>
+          <span>{{ d }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </label>
+
+    <label class="field">
+      <span>On average, how many meat-based meals do you eat per week?</span>
+      <input type="number" name="meat_meals_week" min="0" max="21" step="1" placeholder="0–21" required>
+    </label>
+  </fieldset>
+
+  <!-- SECTION D: Waste Management -->
+  <fieldset class="step" data-step="4" hidden>
+    <legend>Section D &middot; Waste Management</legend>
+    <p class="hint">How much household waste do you generate each week?</p>
+
+    <label class="field">
+      <span>Bag size</span>
+      <div class="card-options" data-name="waste_bag_size">
+        {% for size in bag_sizes %}
+        <label class="card-option">
+          <input type="radio" name="waste_bag_size" value="{{ size }}" {% if size == 'Medium' %}checked{% endif %} required>
+          <span>{{ size }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </label>
+
+    <label class="field">
+      <span>Number of bags per week</span>
+      <input type="number" name="waste_bags_week" min="0" step="1" placeholder="e.g. 3" required>
+    </label>
+  </fieldset>
+
+  <!-- SECTION E: Sustainable Habits -->
+  <fieldset class="step" data-step="5" hidden>
+    <legend>Section E &middot; Sustainable Habits (Carbon Offsets)</legend>
+
+    <label class="field">
+      <span>How many living trees have you planted and maintained?</span>
+      <input type="number" name="trees" min="0" step="1" placeholder="e.g. 2" value="0">
+    </label>
+
+    <label class="field">
+      <span>Which of these sustainable practices do you regularly follow?</span>
+      <div class="check-options">
+        {% for key, val in practices.items() %}
+        <label class="check-option">
+          <input type="checkbox" name="practices" value="{{ key }}">
+          <span>{{ val[0] }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </label>
+  </fieldset>
+
+  <div class="step-nav">
+    <button type="button" class="btn ghost" id="btn-back">Back</button>
+    <button type="button" class="btn primary" id="btn-next">Continue</button>
+    <button type="submit" class="btn primary" id="btn-submit" hidden>Calculate my footprint</button>
+  </div>
+</form>
+{% endblock %}

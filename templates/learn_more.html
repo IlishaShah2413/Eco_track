@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}EcoTrack — Learn More{% endblock %}
+
+{% block content %}
+<section class="hero-mini">
+  <p class="eyebrow">Learn more</p>
+  <h1>The story behind <span class="accent">every kilogram.</span></h1>
+  <p class="lede">This page is the landing spot for your "Learn more" links. Point it at a real
+  blog/post page, or render articles here directly.</p>
+</section>
+
+<div class="card">
+  <h2>How EcoTrack calculates your footprint</h2>
+  <ul class="advice-list">
+    <li>Transport: distance (km/month) &times; mode emission factor &times; 12</li>
+    <li>Electricity: kWh/month &times; 0.82 &times; 12</li>
+    <li>LPG: cylinders/month &times; 42 &times; 12</li>
+    <li>Diet: fixed annual baseline by diet type, plus meat-meal add-on</li>
+    <li>Waste: bag factor &times; bags/week &times; 52</li>
+    <li>Offsets: trees &times; 21/yr, plus fixed offsets per sustainable habit</li>
+  </ul>
+</div>
+{% endblock %}
